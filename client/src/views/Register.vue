@@ -15,7 +15,7 @@
     <form @submit.prevent="handleSubmit">
       <!-- error message -->
       <p class="error-message" v-if="failedLogin">
-        Username on email address already exists
+        Username or email address already exists
       </p>
 
       <!-- email -->
@@ -147,5 +147,6 @@ button {
 .back {
   grid-column: 4/5;
   margin-left: 30px;
+  width: 100px;
 }
 </style>

@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Dashboard from '../views/Dashboard.vue';
 import Register from '../views/Register.vue';
-import authenticateIncomingRequest from '../components/authenticate';
+import authenticateIncomingRequest from '../composables/authenticate';
+import WentWrong from '../views/WentWrong.vue';
 const routes = [
   {
     path: '/',
@@ -20,9 +21,13 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     async beforeEnter(to, from, next) {
-      const request = await authenticateIncomingRequest();
-      if (request.message === 'Authentication invalid') {
-        router.push({ name: 'Home' });
+      try {
+        const request = await authenticateIncomingRequest();
+        if (request.message === 'Authentication invalid') {
+          router.push({ name: 'Home' });
+        }
+      } catch (e) {
+        router.push({ name: 'WentWrong' });
       }
       next();
     }
@@ -31,6 +36,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/went-wrong',
+    name: 'WentWrong',
+    component: WentWrong
   }
 ];
 
