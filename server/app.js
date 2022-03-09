@@ -10,7 +10,7 @@ const cors = require('cors');
 
 // routes
 const authRouter = require('./routes/authRouter');
-
+const userRouter = require('./routes/userRouter');
 // middlewares
 const errorHandlerMiddleware = require('./middlewares/errorHandlerMiddleware');
 
@@ -25,7 +25,7 @@ app.use(
 );
 
 app.use('/api/v1/auth', authRouter);
-
+app.use('/api/v1/users', userRouter);
 app.use(errorHandlerMiddleware);
 
 const PORT = process.env.PORT || 5555;
