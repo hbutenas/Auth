@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken');
-// TODO Cookies and token has to expire at the same time
 const createJWTTokens = async payload => {
   const accessToken = await jwt.sign(payload, process.env.ACCESS_TOKEN, {
-    expiresIn: process.env.ENV === 'production' ? '1m' : '1h'
+    expiresIn: '1m'
   });
   const refreshToken = await jwt.sign(payload, process.env.REFRESH_TOKEN, {
-    expiresIn: process.env.ENV === 'production' ? '14d' : '30d'
+    expiresIn: '14d'
   });
   return { accessToken, refreshToken };
 };
@@ -27,13 +26,23 @@ const assignCookiesToResponse = async (payload, Response) => {
   });
 
   const fourteenDays = 1000 * 60 * 60 * 24 * 14;
-  const oneMonth = 1000 * 60 * 60 * 24 * 30;
 
   Response.cookie('refresh_token', refreshToken, {
     httpOnly: true,
-    maxAge: process.env.ENV === 'production' ? fourteenDays : oneMonth
+    maxAge: fourteenDays
   });
   return accessToken;
 };
 
-module.exports = { assignCookiesToResponse, verifyToken };
+const deleteCookiesFromResponse = async Response => {
+  Response.clearCookie('access_token');
+  Response.clearCookie('refresh_token');
+
+  return { message: 'User successfully logged out.' };
+};
+
+module.exports = {
+  assignCookiesToResponse,
+  verifyToken,
+  deleteCookiesFromResponse
+};
