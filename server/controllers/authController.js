@@ -2,7 +2,8 @@ const { StatusCodes } = require('http-status-codes');
 const {
   registerService,
   loginService,
-  verifyService
+  verifyService,
+  logoutService
 } = require('../services/auth/authService');
 
 const registerController = async (req, res) => {
@@ -16,7 +17,8 @@ const loginController = async (req, res) => {
 };
 
 const logoutController = async (req, res) => {
-  console.log('Logout controller');
+  const response = await logoutService(req, res);
+  res.status(StatusCodes.OK).json({ response });
 };
 
 const verifyController = async (req, res) => {
