@@ -1,9 +1,13 @@
 const { createUser, getSingleUserWithPassword } = require('../../daos/users');
 const CustomError = require('../../errors');
 const { hashPassword, validatePassword } = require('../../utils/bcryptUtils');
-const { assignCookiesToResponse } = require('../../utils/jwtUtils');
+const {
+  assignCookiesToResponse,
+  deleteCookiesFromResponse
+} = require('../../utils/jwtUtils');
 const { usernameHelper } = require('./authUtils');
 const { verifyToken } = require('../../utils/jwtUtils');
+
 /* Receiving request body only */
 const registerService = async requestBody => {
   const { username, email, password } = requestBody;
@@ -59,17 +63,23 @@ const loginService = async (Request, Response) => {
 /* Receiving request and response objects */
 const verifyService = async (Request, Response) => {
   const { refresh_token, access_token } = Request.cookies;
-
   if (access_token) {
-    return await verifyToken(access_token, process.env.ACCESS_TOKEN);
+    const user = await verifyToken(access_token, process.env.ACCESS_TOKEN);
+
+    if (!user) {
+      throw new CustomError.BadRequest('Authentication invalid');
+    }
+
+    return user;
   }
 
   if (refresh_token && !access_token) {
     const user = await verifyToken(refresh_token, process.env.REFRESH_TOKEN);
 
     if (!user) {
-      throw new CustomError.BadRequest('Invalid username or password');
+      throw new CustomError.BadRequest('Authentication invalid');
     }
+
     const userPayload = {
       user_id: user.user_id,
       username: user.username,
@@ -82,4 +92,15 @@ const verifyService = async (Request, Response) => {
   }
 };
 
-module.exports = { registerService, loginService, verifyService };
+/* Receiving request and response objects */
+const logoutService = async (Request, Response) => {
+  const deletedCookies = await deleteCookiesFromResponse(Response);
+  console.log(deletedCookies);
+};
+
+module.exports = {
+  registerService,
+  loginService,
+  verifyService,
+  logoutService
+};
