@@ -4,7 +4,9 @@ const createUser = async payload => {
   return database('users').insert(payload);
 };
 
-const getSingleUser = () => {};
+const getSingleUserByProp = (property, value) => {
+  return database('users').where(property, value);
+};
 
 const getSingleUserWithPassword = (property, value) => {
   return database('users')
@@ -12,7 +14,12 @@ const getSingleUserWithPassword = (property, value) => {
     .where(property, value);
 };
 
-const getAllUsers = () => {};
+const getAllUsers = () => {
+  return database
+    .column(['user_id', 'username', 'role'])
+    .select()
+    .from('users');
+};
 
 const updateUser = () => {};
 
@@ -20,7 +27,7 @@ const deleteUser = () => {};
 
 module.exports = {
   createUser,
-  getSingleUser,
+  getSingleUserByProp,
   getAllUsers,
   updateUser,
   deleteUser,
