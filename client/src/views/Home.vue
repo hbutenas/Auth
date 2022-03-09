@@ -67,6 +67,11 @@ export default {
   }
 };
 </script>
+<style>
+body {
+  background: #fbfbfd;
+}
+</style>
 
 <style scoped>
 form {
