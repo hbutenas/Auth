@@ -13,9 +13,4 @@ class AuthRepository
       'password' => $credentials->password
     ]);
   }
-
-  public function findByEmail(string $email)
-  {
-    return User::where('email', $email)->first();
-  }
 }
