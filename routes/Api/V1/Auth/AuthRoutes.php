@@ -13,6 +13,5 @@ Route::group(['prefix' => 'v1/auth'], function () {
 
 // Protected routes
 Route::group(['prefix' => 'v1/auth', 'middleware' => ['auth']], function () {
-  // Route::get('identify', [AuthController::class, 'identify']);
   Route::post('logout', [AuthController::class, 'logout']);
 });
