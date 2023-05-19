@@ -1,20 +1,17 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     ssr: false,
-    modules: ["@nuxtjs/tailwindcss"],
+    modules: [
+        "@nuxtjs/tailwindcss",
+        "@pinia/nuxt",
+        "@pinia-plugin-persistedstate/nuxt",
+    ],
     components: ["~/components", "~/components/auth"],
-    app: {
-        head: {
-            script: [
-                {
-                    hid: "flowbite",
-                    src: "https://unpkg.com/flowbite@1.5.3/dist/flowbite.js",
-                    defer: true,
-                },
-                {
-                    src: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAZn3EraQKcexvPaH3Nt0TpnQ_xuV4Dhlg&libraries=places",
-                },
-            ],
+    runtimeConfig: {
+        public: {
+            GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+            GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+            GITHUB_REPOSITORY: process.env.GITHUB_REPOSITORY,
         },
     },
 });
