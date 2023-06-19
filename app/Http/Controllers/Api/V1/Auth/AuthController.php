@@ -31,4 +31,9 @@ class AuthController extends Controller
     {
         return $this->authService->logout($request);
     }
+
+    public function identify(): object
+    {
+        return $this->authService->identify();
+    }
 }

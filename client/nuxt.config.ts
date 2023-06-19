@@ -6,7 +6,13 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@pinia-plugin-persistedstate/nuxt",
     ],
-    components: ["~/components", "~/components/auth"],
+    components: [
+        "~/components",
+        "~/components/auth",
+        "~/components/github",
+        "~/components/navbar",
+        "~/components/profile",
+    ],
     runtimeConfig: {
         public: {
             GITHUB_TOKEN: process.env.GITHUB_TOKEN,

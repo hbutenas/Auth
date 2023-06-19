@@ -6,11 +6,11 @@ use App\Models\User;
 
 class AuthRepository
 {
-  public function store(object $credentials)
+  public function store(object $request): object
   {
     return User::create([
-      'email' => $credentials->email,
-      'password' => $credentials->password
+      'email' => $request->email,
+      'password' => $request->password
     ]);
   }
 }
